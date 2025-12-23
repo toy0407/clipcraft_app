@@ -1,5 +1,6 @@
 import 'package:clipcraft/features/auth/views/login.screen.dart';
 import 'package:clipcraft/features/auth/views/register.screen.dart';
+import 'package:clipcraft/features/home/views/home.screen.dart';
 import 'package:clipcraft/features/onboarding/views/onboarding.screen.dart';
 import 'package:clipcraft/features/splash/views/splash.screen.dart';
 import 'package:get/get.dart';
@@ -23,6 +24,6 @@ class AppPages {
     GetPage(name: AppRoutes.onboarding, page: () => OnboardingScreen()),
     GetPage(name: AppRoutes.login, page: () => LoginScreen()),
     GetPage(name: AppRoutes.register, page: () => RegisterScreen()),
-    // GetPage(name: AppRoutes.home, page: () => HomeScreen()),
+    GetPage(name: AppRoutes.home, page: () => HomeScreen()),
   ];
 }

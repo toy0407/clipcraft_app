@@ -1,4 +1,6 @@
+import 'package:clipcraft/core/theme/app_text_styles.dart';
 import 'package:clipcraft/features/auth/controllers/auth.contoller.dart';
+import 'package:clipcraft/features/splash/widgets/app_logo.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pinput/pinput.dart';
@@ -10,73 +12,62 @@ class OTPView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(24),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Center(
-            child: Container(
-              width: 72,
-              height: 72,
-              decoration: BoxDecoration(
-                color: Theme.of(context).colorScheme.surfaceContainerHighest.withValues(alpha: 0.9),
-                shape: BoxShape.circle,
-                boxShadow: [
-                  BoxShadow(color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.08), blurRadius: 12, offset: const Offset(0, 6)),
-                ],
-              ),
-              child: Icon(Icons.lock_outline, color: Theme.of(context).colorScheme.primary, size: 36),
-            ),
-          ),
+    return SafeArea(
+      child: Padding(
+        padding: const EdgeInsets.all(24),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            AppLogo(),
 
-          const SizedBox(height: 20),
-
-          Center(
-            child: Text('Enter OTP', style: Theme.of(context).textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.w700)),
-          ),
-          const SizedBox(height: 8),
-          Center(
-            child: Text(
-              'We sent a 6-digit code to your email',
-              style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: Theme.of(context).colorScheme.onSurface.withAlpha(180)),
-            ),
-          ),
-
-          const SizedBox(height: 18),
-
-          _buildEmailInfo(),
-
-          const SizedBox(height: 12),
-
-          _buildOtpInput(),
-
-          const SizedBox(height: 24),
-
-          _buildVerifyButton(),
-
-          const SizedBox(height: 8),
-
-          _buildResendButton(),
-        ],
+            const SizedBox(height: 20),
+            Center(child: Text('Verify your account', style: Theme.of(context).textTheme.headlineLarge)),
+            const SizedBox(height: 32),
+            _buildEmailInfo(context),
+            const SizedBox(height: 24),
+            _buildOtpInput(context),
+            Spacer(),
+            _buildVerifyButton(context),
+            const SizedBox(height: 24),
+            _buildResendButton(context),
+          ],
+        ),
       ),
     );
   }
 
-  Widget _buildEmailInfo() {
+  Widget _buildEmailInfo(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final textTheme = Theme.of(context).textTheme;
+    final email = auth.emailController.text;
+
     return Column(
       children: [
-        Text('We have sent an OTP to ${auth.emailController.text}', style: const TextStyle(fontSize: 12)),
-        TextButton(onPressed: auth.backToEmailPage, child: const Text('Change Email')),
+        Text.rich(
+          TextSpan(
+            text: 'We sent a 6-digit OTP to ',
+            style: textTheme.bodyMedium?.copyWith(color: colorScheme.onSurface.withValues(alpha: 0.75)),
+            children: [
+              TextSpan(
+                text: email,
+                style: textTheme.bodyMedium?.copyWith(color: colorScheme.secondary, fontWeight: FontWeight.w700),
+              ),
+            ],
+          ),
+          textAlign: TextAlign.center,
+        ),
+        TextButton(
+          onPressed: auth.backToEmailPage,
+          child: Text('Change Email', style: TextStyle(color: colorScheme.secondary)),
+        ),
       ],
     );
   }
 
-  Widget _buildOtpInput() {
-    // Get current theme properties
-    final colorScheme = Theme.of(Get.context!).colorScheme;
-    final textTheme = Theme.of(Get.context!).textTheme;
+  Widget _buildOtpInput(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final textTheme = Theme.of(context).textTheme;
 
     // Pin themes: use filled rounded boxes to match EmailView/onboarding
     final defaultPinTheme = PinTheme(
@@ -98,14 +89,14 @@ class OTPView extends StatelessWidget {
       decoration: defaultPinTheme.decoration!.copyWith(border: Border.all(color: colorScheme.error, width: 2)),
     );
 
-    // GlobalKey to force rebuilds when error state changes
-    final pinputKey = ValueKey(auth.otpError.value);
-
     return Obx(() {
+      // Key to force rebuilds when error state changes
+      final pinputKey = ValueKey(auth.otpError.value);
       return Pinput(
         key: pinputKey,
         length: 6,
         controller: auth.otpController,
+        enabled: !auth.isVerifyOtpButtonLoading.value,
         defaultPinTheme: defaultPinTheme,
         focusedPinTheme: focusedPinTheme,
         errorPinTheme: errorPinTheme,
@@ -127,42 +118,33 @@ class OTPView extends StatelessWidget {
     });
   }
 
-  Widget _buildVerifyButton() {
+  Widget _buildVerifyButton(BuildContext context) {
     return Obx(() {
-      final colorScheme = Theme.of(Get.context!).colorScheme;
+      final colorScheme = Theme.of(context).colorScheme;
       return SizedBox(
         width: double.infinity,
         height: 56,
         child: ElevatedButton(
           onPressed: auth.isVerifyOtpButtonLoading.value ? null : auth.verifyOTP,
-          style: ElevatedButton.styleFrom(
-            backgroundColor: colorScheme.primary,
-            shadowColor: colorScheme.primary.withValues(alpha: 0.2),
-            elevation: 10,
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(36)),
-            padding: const EdgeInsets.symmetric(horizontal: 24),
-          ),
           child: auth.isVerifyOtpButtonLoading.value
               ? SizedBox(width: 24, height: 24, child: CircularProgressIndicator(color: colorScheme.onPrimary, strokeWidth: 2.4))
-              : Text(
-                  'Verify',
-                  style: Theme.of(
-                    Get.context!,
-                  ).textTheme.titleMedium?.copyWith(color: colorScheme.onPrimary, fontWeight: FontWeight.w700, fontSize: 18),
-                ),
+              : Text('Verify', style: AppTextStyles.buttonText),
         ),
       );
     });
   }
 
-  Widget _buildResendButton() {
+  Widget _buildResendButton(BuildContext context) {
     return Obx(() {
-      final enabled = auth.resendOtpButtonEnabled.value;
+      final enabled = auth.resendOtpButtonEnabled.value && auth.resendOtpSecondsRemaining.value == 0;
+      final remaining = auth.resendOtpSecondsRemaining.value;
       return TextButton(
         onPressed: enabled ? auth.resendOtp : null,
         child: Text(
-          'Resend OTP',
-          style: Theme.of(Get.context!).textTheme.bodyMedium?.copyWith(color: enabled ? Theme.of(Get.context!).colorScheme.primary : null),
+          remaining > 0 ? 'Resend OTP in ${remaining}s' : 'Resend OTP',
+          style: AppTextStyles.bodyLarge.copyWith(
+            color: enabled ? Theme.of(context).colorScheme.secondary : Theme.of(context).colorScheme.onSurface.withAlpha(128),
+          ),
         ),
       );
     });

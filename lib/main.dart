@@ -1,6 +1,7 @@
 import 'package:clipcraft/core/router/router.dart';
 import 'package:clipcraft/core/theme/app_theme.dart';
 import 'package:clipcraft/core/utils/shared_prefs.utils.dart';
+import 'package:clipcraft/core/utils/snackbar.util.dart';
 import 'package:clipcraft/features/auth/controllers/auth.contoller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -27,9 +28,10 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
+      scaffoldMessengerKey: SnackbarUtil.messengerKey,
       title: 'ClipCraft',
-      theme: AppTheme.lightTheme,
-      darkTheme: AppTheme.darkTheme,
+      theme: AppTheme.darkTheme,
+      // darkTheme: AppTheme.darkTheme,
       initialRoute: AppRoutes.splash,
       getPages: AppPages.pages,
     );

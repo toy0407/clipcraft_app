@@ -7,4 +7,8 @@ class UserRepository {
     // TODO: Implement user details fetching logic
     return null;
   }
+
+  Future<bool> createUser({required String name}) async {
+    return true;
+  }
 }

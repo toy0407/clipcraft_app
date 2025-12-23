@@ -1,12 +1,12 @@
+import 'package:clipcraft/data/datasources/remote/auth.api.dart';
+
 class AuthRepository {
   AuthRepository._internal();
   static final AuthRepository _instance = AuthRepository._internal();
   factory AuthRepository() => _instance;
 
   Future<bool> sendOtp(String email) async {
-    // TODO: Implementation for sending OTP
-    await Future.delayed(const Duration(seconds: 3));
-    return true;
+    return await AuthApi().sendOtp(email);
   }
 
   Future<bool> verifyOtp(String email, String otp) async {

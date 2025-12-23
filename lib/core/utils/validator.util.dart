@@ -11,10 +11,10 @@ class Validator {
     return !isValidUrl(value);
   }
 
-  // Name should only contain letters and spaces, and length should be 2 and 50 characters
+  // Name should only contain letters and spaces, and length should be 3 and 50 characters
   static bool isValidName(String? value) {
     if (value == null || value.isEmpty) return false;
-    final nameRegex = RegExp(r"^(?!.*  )[a-zA-Zà-ÿÀ-ß'.,\- ]{2,50}$");
+    final nameRegex = RegExp(r"^(?!.*  )[a-zA-Zà-ÿÀ-ß'.,\- ]{3,50}$");
     return nameRegex.hasMatch(value.trim());
   }
 
