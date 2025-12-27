@@ -45,6 +45,25 @@ class AppTheme {
         shadowColor: AppColors.primary.withValues(alpha: 0.3),
       ),
     ),
+    searchBarTheme: SearchBarThemeData(
+      backgroundColor: WidgetStatePropertyAll(AppColors.lightSurface),
+      elevation: const WidgetStatePropertyAll(0),
+      surfaceTintColor: const WidgetStatePropertyAll(Colors.transparent),
+      shape: WidgetStatePropertyAll(RoundedRectangleBorder(borderRadius: BorderRadius.circular(16))),
+      textStyle: WidgetStatePropertyAll(AppTextStyles.bodyLarge.copyWith(color: AppColors.lightText)),
+      hintStyle: WidgetStatePropertyAll(AppTextStyles.bodyMedium.copyWith(color: AppColors.lightText.withValues(alpha: 0.6))),
+      overlayColor: WidgetStatePropertyAll(AppColors.primary.withValues(alpha: 0.08)),
+    ),
+    tabBarTheme: TabBarThemeData(
+      labelColor: AppColors.primary,
+      unselectedLabelColor: AppColors.lightText.withValues(alpha: 0.7),
+      labelStyle: AppTextStyles.bodyLarge.copyWith(fontWeight: FontWeight.w700),
+      unselectedLabelStyle: AppTextStyles.bodyLarge.copyWith(fontWeight: FontWeight.w600),
+      indicatorColor: AppColors.primary,
+      indicatorSize: TabBarIndicatorSize.tab,
+      dividerColor: Colors.transparent,
+      overlayColor: WidgetStatePropertyAll(AppColors.primary.withValues(alpha: 0.08)),
+    ),
   );
 
   // Dark Theme
@@ -89,6 +108,43 @@ class AppTheme {
         elevation: 4,
         shadowColor: AppColors.primary.withValues(alpha: 0.4),
       ),
+    ),
+    searchBarTheme: SearchBarThemeData(
+      backgroundColor: WidgetStatePropertyAll(AppColors.darkSurface),
+      elevation: const WidgetStatePropertyAll(0),
+      surfaceTintColor: const WidgetStatePropertyAll(Colors.transparent),
+      shape: WidgetStatePropertyAll(RoundedRectangleBorder(borderRadius: BorderRadius.circular(16))),
+      textStyle: WidgetStatePropertyAll(AppTextStyles.bodyLarge.copyWith(color: AppColors.darkText)),
+      hintStyle: WidgetStatePropertyAll(AppTextStyles.bodyMedium.copyWith(color: AppColors.darkText.withValues(alpha: 0.7))),
+      overlayColor: WidgetStatePropertyAll(AppColors.primary.withValues(alpha: 0.12)),
+    ),
+    tabBarTheme: TabBarThemeData(
+      labelColor: AppColors.secondary,
+      unselectedLabelColor: AppColors.darkText.withValues(alpha: 0.7),
+      labelStyle: AppTextStyles.bodyLarge.copyWith(fontWeight: FontWeight.w700),
+      unselectedLabelStyle: AppTextStyles.bodyLarge.copyWith(fontWeight: FontWeight.w600),
+      indicatorColor: AppColors.secondary,
+      indicatorSize: TabBarIndicatorSize.tab,
+      dividerColor: Colors.transparent,
+      overlayColor: WidgetStatePropertyAll(AppColors.primary.withValues(alpha: 0.12)),
+    ),
+    iconButtonTheme: IconButtonThemeData(
+      style: IconButton.styleFrom(
+        foregroundColor: AppColors.darkText.withValues(alpha: 0.7),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+        splashFactory: InkRipple.splashFactory,
+      ),
+    ),
+    textButtonTheme: TextButtonThemeData(
+      style: TextButton.styleFrom(
+        foregroundColor: AppColors.secondary,
+        textStyle: AppTextStyles.bodyMedium.copyWith(fontWeight: FontWeight.w600),
+      ),
+    ),
+    popupMenuTheme: PopupMenuThemeData(
+      color: AppColors.darkSurface,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+      textStyle: AppTextStyles.bodyMedium.copyWith(color: AppColors.darkText),
     ),
   );
 }
